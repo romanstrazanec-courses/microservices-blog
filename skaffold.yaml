@@ -1,0 +1,65 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+
+build:
+  local:
+    push: false
+  artifacts:
+    - image: romanstrazanec/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.js'
+            dest: .
+
+    - image: romanstrazanec/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+
+    - image: romanstrazanec/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+
+    - image: romanstrazanec/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+
+    - image: romanstrazanec/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+
+    - image: romanstrazanec/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
